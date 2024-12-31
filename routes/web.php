@@ -10,9 +10,6 @@ Route::get('/login', function () {
 
 Route::get('/newLocation', [AppController::class, 'getAllLocations'])->name('getAllLocations');
 
-Route::post('/addLocation', [AppController::class, 'addLocation'])->name('addLocation');
-Route::post('/newMaterial', [AppController::class, 'addMaterial'])->name('newMaterial');
-
 Route::get('/addMaterial', [AppController::class, 'getAllMaterials'])->name(('getAllMaterials'));
 Route::get('/newUser', function () {
     return view('addUser');
@@ -20,3 +17,8 @@ Route::get('/newUser', function () {
 Route::get('/editUser', function () {
     return view('editUser');
 });
+
+
+Route::post('/addLocation', [AppController::class, 'addLocation'])->name('addLocation');
+Route::post('/newMaterial', [AppController::class, 'addMaterial'])->name('newMaterial');
+Route::post('/createUser', [AppController::class, 'adduser'])->name('createUser');

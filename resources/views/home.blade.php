@@ -5,19 +5,13 @@
         <table id="table" class="table table-bordered border-collapse border-2 border-light table-dark justifiy-content-center text-center w-75 ms-auto me-auto">
             <thead>
                 <tr>
+                    <th>#</th>
                     <th>Location</th>
                     <th>Material</th>
                     <th>Supplier</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($materials as $material)
-                    <tr>
-                        <td>{{ $material->location }}</td>
-                        <td>{{ $material->material }}</td>
-                        <td>Supplier</td>
-                    </tr>
-                @endforeach
             </tbody>
         </table>
 
@@ -37,30 +31,34 @@
 
         function searchMaterial(){
             let searched = document.getElementById("search").value.toUpperCase();
-            let results = Object.entries(test).filter(([key, value]) => key.toUpperCase().startsWith(searched));
-            console.log(results);
+            let results = test.filter(obj => obj.material.toUpperCase().startsWith(searched));
             table.innerHTML = '';
+            let count = 1;
             results.forEach( item => {
                 let row = table.insertRow();
-                row.insertCell(0).textContent = item[0];
-                row.insertCell(1).textContent = item[1];
-                row.insertCell(2).textContent = "Supplier";
+                row.insertCell(0).textContent = count;
+                row.insertCell(1).textContent = item.location;
+                row.insertCell(2).textContent = item.material;
+                row.insertCell(3).textContent = "Supplier";
+
+                count++;
             })
             if(!searched){
                 table.innerHTML = '';
             }
         }
 
-        /* edit this */
         function showAll(){
             table.innerHTML = '';
-            let results = Object.entries(test);
-            console.log(results);
-            results.forEach(item => {
+            let count = 1;
+            test.forEach(item => {
                 let row = table.insertRow();
-                row.insertCell(0).textContent = item[0];
-                row.insertCell(1).textContent = item[1];
-                row.insertCell(2).textContent = "Supplier";
+                row.insertCell(0).textContent = count;
+                row.insertCell(1).textContent = item.location;
+                row.insertCell(2).textContent = item.material;
+                row.insertCell(3).textContent = "Supplier";
+
+                count++;
             });
         }
     </script>

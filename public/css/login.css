@@ -32,7 +32,6 @@ select{
 }
 option{
     width: fit-content !important;
-    background-color: red;
 }
 
 .disabled{

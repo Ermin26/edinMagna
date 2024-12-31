@@ -8,10 +8,10 @@
         <form action="{{route('newMaterial')}}" id="materialForm" method="POST">
             @csrf
             <div class="mb-3 bg-dark p-4">
-                <label for="location" class="form-label">Location</label>
+                <label for="location" class="form-label m-2">Location</label>
                 <input type="text" class="form-control" id="location" name="location[]" required>
 
-                <label for="material" class="form-label">Material</label>
+                <label for="material" class="form-label m-2">Material</label>
                 <input type="text" class="form-control" id="material" name="material[]" required>
             </div>
             <div id="addedRows">

@@ -2,18 +2,45 @@
 
 namespace App\Http\Controllers;
 use \Illuminate\Validation\ValidationException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Material;
 use App\Models\Location;
+use App\Models\User;
 
 
 
 class AppController extends Controller{
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     public function home(){
         $materials = Material::all();
 
         return view('home', compact('materials'));
+    }
+
+    public function addUser(Request $request){
+        try{
+            $request->validate([
+                'username' => 'required|string',
+                'role' => 'required|string',
+                'password' => 'required|string|max:255|confirmed'
+            ]);
+            User::create([
+                'name' => $request->input('username'),
+                'role' => $request->input('role'),
+                'password' =>  Hash::make($request->input('password'))
+            ]);
+            return redirect()->back()->with('success', "User {$request->input('username')} added successfully");
+        }catch(ValidationException $e){
+            $error = $e->validator->errors()->all();
+            $errors = implode('<br>', $error);
+            return redirect()->back()->with('error', $errors);
+        }
     }
 
     public function addLocation(Request $request){
@@ -58,7 +85,7 @@ class AppController extends Controller{
             $locations = $request->input('location');
             $errors = [];
             $success = [];
-            
+
             if(count($materials) > 1 && count($locations) == 1){
                 if($this->checkNewLocation($locations[0])){
                     foreach($materials as $newMaterial){

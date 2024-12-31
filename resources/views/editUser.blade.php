@@ -28,8 +28,8 @@
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
             <div class="mb-3">
-                <label for="confirmation_password" class="form-label">Password again</label>
-                <input type="password" class="form-control" id="confirmation_password" name="confirmation_password" required>
+                <label for="password_confirmation" class="form-label">Password again</label>
+                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
             </div>
             <button class="btn btn-primary">Submit</button>
         </form>
