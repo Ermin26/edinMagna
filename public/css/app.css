@@ -59,6 +59,8 @@ main{
     align-items: center;
     justify-content: center;
     position: relative;
+    width: 100%;
+    overflow: hidden;
     top: 50px;
     padding: 10px 20px;
 }
@@ -66,6 +68,10 @@ main{
 #table{
     width: fit-content !important;
     overflow-y: auto;
+}
+#allMaterials,#allLocations{
+    max-width: 100%;
+    padding: 4px;
 }
 
 #alertSection{
