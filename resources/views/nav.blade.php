@@ -8,14 +8,13 @@
             <span class="navbar-toggler-icon"></span>
         </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <div class="navbar-nav">
-            <a href="/addMaterial" class="btn btn-sm btn-secondary">Add material</a>
-            <a href="/newLocation" class="btn btn-sm btn-secondary">Add location</a>
-            <a href="/newUser" class="btn btn-sm btn-secondary">Add user</a>
-            <a href="/editUser" class="btn btn-sm btn-secondary">Edit user</a>
-            <a href="/login" class="btn btn-sm btn-secondary ms-auto">Log in</a>
-            <a href="#" class="btn btn-sm btn-secondary">Log out</a>
-          </div>
+        <ul class="navbar-nav">
+            <li class="nav-item"><a href="/addMaterial" class="btn btn-sm btn-secondary">Add material</a></li>
+            <li class="nav-item"><a href="/newLocation" class="btn btn-sm btn-secondary">Add location</a></li>
+            <li class="nav-item"><a href="/newUser" class="btn btn-sm btn-secondary">Add user</a></li>
+            <li class="nav-item"><a href="/editUser" class="btn btn-sm btn-secondary">Edit user</a></li>
+            <li class="nav-item ms-auto"><a href="/login" class="btn btn-sm btn-secondary ms-auto">Log in</a></li>
+            <li class="nav-item ms-auto"><a href="#" class="btn btn-sm btn-secondary">Log out</a></li>
         </ul>
       </div>
     </div>

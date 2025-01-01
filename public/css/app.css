@@ -28,6 +28,7 @@ nav{
     background-color: whitesmoke;
 }
 
+
 #search, button, .btn{
     max-height: 60px;
     padding: 4px 8px;
@@ -35,11 +36,18 @@ nav{
     border-radius: 5px;
     border:none;
 }
+#search{
+    max-width: 400px;
+}
 
 .navbar-nav{
     width: 100%;
     display: flex;
     padding: 10px 5px;
+}
+
+.navbar-nav li{
+    margin: 4px 0;
 }
 
 a{
@@ -105,8 +113,8 @@ main{
     width: fit-content !important;
 }
 
-@media (max-width: 390px){
+@media (max-width: 576px){
     #search{
-        width: 160px;
+       max-width: 160px;
     }
 }
