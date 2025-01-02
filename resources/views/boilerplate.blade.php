@@ -20,7 +20,20 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-   
-
+    <script>
+        let navBtn = document.getElementById("navbarBtn");
+        navBtn.addEventListener("click", ()=>{
+            let collapsedDiv = document.getElementById("navbarNav");
+            if(collapsedDiv.classList.contains("show")){
+                navBtn.setAttribute('aria-expanded', 'false');
+                navBtn.classList.add('collapsed');
+                collapsedDiv.classList.remove('show');
+            }else{
+                navBtn.setAttribute('aria-expanded', 'true');
+                navBtn.classList.remove('collapsed');
+                collapsedDiv.classList.add('show');
+            }
+    })
+    </script>
 </body>
 </html>

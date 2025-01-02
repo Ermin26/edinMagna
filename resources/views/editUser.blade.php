@@ -6,20 +6,27 @@
 
 @section('content')
     <section>
-        <form action="">
+        <form action="{{route('updateUser')}}" method="POST">
+            @csrf
             <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
+                <label for="username" class="form-label">User</label>
                 <select name="username" id="username" class="form-control" required>
                     <option selected>Choose User</option>
-                    <option value="admin">Admin</option>
-                    <option value="visitor">Visitor</option>
+                    @foreach ($users as $user)
+                        <option value="{{$user->id}}">{{$user->name}}</option>
+                    @endforeach
                 </select>
+            </div>
+            <div class="mb-3">
+                <label for="name" class="form-label">Username</label>
+                <input type="text" class="form-control" id="name" name="name" value="">
             </div>
             <div class="mb-3">
                 <label for="role" class="form-label">Role</label>
                 <select name="role" id="role" class="form-control" required>
                     <option selected>Choose role</option>
                     <option value="admin">Admin</option>
+                    <option value="admin">Moderator</option>
                     <option value="visitor">Visitor</option>
                 </select>
             </div>

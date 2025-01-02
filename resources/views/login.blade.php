@@ -6,7 +6,8 @@
 
 @section('content')
     <section>
-        <form action="">
+        <form action="{{route('userLogin')}}" method="POST">
+            @csrf
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" name="username" required>

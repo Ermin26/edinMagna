@@ -1,13 +1,13 @@
 section{
     background-color: rgb(87, 86, 86);
-    min-width: 400px;
+    min-width: 300px;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-left: auto;
     margin-right: auto;
-    padding: 10px 5px;
+    padding: 10px 24px;
     color: whitesmoke;
     box-shadow: 0 0 5px 5px rgb(39, 39, 39);
     border-radius: 4px;
@@ -38,4 +38,16 @@ option{
     pointer-events: none;
     opacity: .9 !important;
     box-shadow: inset 0 0 25px 5px rgb(61, 61, 61) !important;
+}
+
+#errorSpan{
+    margin: 6px 0;
+    padding: 4px 8px;
+    color: rgb(255, 0, 0);
+    opacity: .8;
+    border-radius: 6px;
+    background-color: rgba(0, 0, 0, .7);
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
 }

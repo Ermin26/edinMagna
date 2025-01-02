@@ -17,6 +17,38 @@ use App\Models\User;
 
 class AppController extends Controller{
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function userLogin(Request $request){
+        try{
+            $request->validate([
+                'username' => 'required|string',
+                'password' => 'required|string'
+            ]);
+
+            $user = User::where('name', $request->username)->first();
+            if($user && Hash::check($request->password, $user->password)){
+                Auth::login($user);
+                $request->session()->regenerate();
+                return redirect()->route('home');
+            }else{
+                return redirect()->back()->with('error', 'Invalid credentials.');
+            }
+        }catch(ValidationException $e){
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+    }
+
+    public function logout(Request $request){
+        if(Auth::check()){
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return redirect()->route('login')->with('success', 'Loged out.');
+        }else{
+            return redirect()->route('login')->with('error', 'You are not logged in.');
+        }
+    }
     public function home(){
         $materials = Material::all();
 
@@ -24,11 +56,12 @@ class AppController extends Controller{
     }
 
     public function addUser(Request $request){
+        if($this->checkRole()){
         try{
             $request->validate([
                 'username' => 'required|string',
                 'role' => 'required|string',
-                'password' => 'required|string|max:255|confirmed'
+                'password' => 'required|string|min:5|max:255|confirmed'
             ]);
             User::create([
                 'name' => $request->input('username'),
@@ -41,9 +74,16 @@ class AppController extends Controller{
             $errors = implode('<br>', $error);
             return redirect()->back()->with('error', $errors);
         }
+        }else{
+            return redirect()->back()->with('error', 'You are not authorized to add any data. ');
+        }
     }
-
+    public function getAllUsers() {
+        $users = User::all()->pluck('name')->toArray();
+        return view('addUser', compact('users'));
+    }
     public function addLocation(Request $request){
+        if($this->checkRole()){
         try{
             $newLocation = $request->input('location');
             $errors = [];
@@ -66,6 +106,9 @@ class AppController extends Controller{
             $errors = $e->validator->errors()->all();
             return redirect()->back()->with('error', implode(', ', $errors));
         }
+        }else{
+            return redirect()->back()->with('error', 'You are not authorized to add any data. ');
+        }
     }
     public function getAllMaterials(){
         $materials = Material::all();
@@ -78,9 +121,8 @@ class AppController extends Controller{
     }
 
     public function addMaterial(Request $request){
-
+        if($this->checkRole()){
         try{
-
             $materials = $request->input('material');
             $locations = $request->input('location');
             $errors = [];
@@ -137,9 +179,56 @@ class AppController extends Controller{
             $errors = $e->validator->errors()->all();
             return redirect()->back()->with('error', implode(', ', $errors));
         }
+        }else{
+            return redirect()->back()->with('error', 'You are not authorized to add any data. ');
+        }
+    }
+
+    public function editUser(){
+        $users = User::all();
+        return view('editUser', compact('users'));
+    }
+
+    public function updateUser(Request $request){
+        if($this->checkRole()){
+        try{
+            $request->validate([
+                'username' => 'string|required',
+                'role' => 'string|required',
+                'password' => 'string|min:5|confirmed'
+            ]);
+            $user = User::find($request->input('username'));
+            if($user){
+                $name = $request->input('name');
+                $role = $request->input('role');
+                $pass = $request->input('password');
+                if($user->name != 'Edin' || Auth::user()->name == $user->name){
+                    $user->update([
+                        'name'=> $request->input('name') ? $name : $user->name,
+                        'role'=> $role,
+                        'password'=> Hash::make($pass)
+                    ]);
+                    return redirect()->back()->with('success', "User {$user->name} updated successfully");
+                }else{
+                    return redirect()->back()->with('error', 'You can not edit user Edin.');
+                }
+            }else{
+                return redirect()->back()->with('error', 'User not found.');
+            }
+        }catch(ValidationException $e){
+            $errors = $e->validator->errors()->all();
+            return redirect()->back()->with('error', implode(', ', $errors));
+        }
+        }else{
+            return redirect()->back()->with('error', 'You are not authorized to add any data. ');
+        }
     }
 
     private function checkNewLocation($newLocation){
         return Location::where('location', $newLocation)->exists();
+    }
+
+    private function checkRole(){
+        return Auth::user()->role == 'admin' || Auth::user()->role == 'moderator';
     }
 }
