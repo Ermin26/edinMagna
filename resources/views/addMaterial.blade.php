@@ -5,20 +5,23 @@
 @endpush
 @section('content')
     <section>
-        <form action="{{route('newMaterial')}}" id="materialForm" method="POST">
+        <form id="form" action="{{route('newMaterial')}}" id="materialForm" method="POST">
             @csrf
             <div class="mb-3 bg-dark p-4">
-                <label for="location" class="form-label m-2">Location</label>
+                <label for="location" class="form-label mt-3">Location</label>
                 <input type="text" class="form-control" id="location" name="location[]" required>
 
-                <label for="material" class="form-label m-2">Material</label>
+                <label for="material" class="form-label mt-3">Material</label>
                 <input type="text" class="form-control" id="material" name="material[]" required>
+
+                <label for="supplier" class="form-label mt-3">Supplier</label>
+                <input type="text" class="form-control" id="supplier" name="supplier[]" required>
             </div>
             <div id="addedRows">
 
             </div>
             <div id="btnRow" class="row d-flex w-100 ms-auto me-auto justify-content-around m-4">
-                <div class="btn btn-sm btn-info w-auto" id="bothAdd" onclick="addRow()">Add both</div>
+                <div class="btn btn-sm btn-info w-auto" id="bothAdd" onclick="addAll()">Add all</div>
                 <div class="btn btn-sm btn-info w-auto" id="materialAdd" onclick="addMat()">Add material</div>
                 <div class="btn btn-sm btn-info w-auto" id="locationAdd" onclick="addLoc()">Add location</div>
             </div>
@@ -29,24 +32,29 @@
         </form>
     </section>
 
+    @if(count($materials) > 0)
     <div class="row justify-content-center m-5">
         <div class="btn btn-primary w-auto" id="showMaterials" onclick="showMaterial()">Show materials</div>
         <div class="btn btn-primary w-auto" id="hideMaterials" onclick="hideMaterial()">Hide materials</div>
     </div>
-
+    @else
+    <h3 class="text-light text-center m-3 p-4">No materials have been added yet.</h3>
+    @endif
     <section id="allMaterials">
         <h2 class="text-center">All materials</h2>
         <table class="table table-dark table-bordered border-2 border-light text-center">
             <thead>
                 <th>Material</th>
                 <th>Supplier</th>
+                <th>Edit</th>
             </thead>
             <tbody>
                 @foreach ($materials as $material)
-                    <tr>
-                        <td>{{$material->material}}</td>
-                        <td>{{$material->supplier}}</td>
-                    </tr>
+                        <tr>
+                            <td>{{$material->material}}</td>
+                            <td>{{$material->supplier}}</td>
+                            <td><a class="btn btn-sm btn-warning" href="editMaterial/{{$material->id}}">Edit</a></td>
+                        </tr>
                 @endforeach
             </tbody>
         </table>
@@ -69,17 +77,21 @@
         clear.style.display = "none";
         allMaterials.style.display = "none";
         hideMaterials.style.display = "none";
-        function addRow(){
+        function addAll(){
             clear.style.display = "flex";
             materialAdd.classList.add('disabled');
             locationAdd.classList.add('disabled');
             let addMatToForms = document.createElement("div");
             addMatToForms.classList.add('mb-3', 'p-4', 'bg-dark');
             let addFieldMaterial = `
-                <label for="location" class="form-label">Location</label>
+                <label for="location" class="form-label mt-3">Location</label>
                 <input type="text" class="form-control" id="location" name="location[]" required>
-                <label for="material" class="form-label">Material</label>
-                <input type="text" class="form-control" id="material" name="material[]" required>`;
+                
+                <label for="material" class="form-label mt-3">Material</label>
+                <input type="text" class="form-control" id="material" name="material[]" required>
+                
+                <label for="supplier" class="form-label mt-3">Supplier</label>
+                <input type="text" class="form-control" id="supplier" name="supplier[]" required>`;
             addMatToForms.innerHTML = addFieldMaterial;
             fields.appendChild(addMatToForms);
         }
@@ -90,7 +102,9 @@
             let addMatToForms = document.createElement("div");
             addMatToForms.classList.add('mb-3', 'p-4', 'bg-dark');
             let addFieldMaterial = `<label for="material" class="form-label">Material</label>
-                <input type="text" class="form-control" id="material" name="material[]" required>`;
+                <input type="text" class="form-control" id="material" name="material[]" required>
+                <label for="supplier" class="form-label mt-4">Supplier</label>
+                <input type="text" class="form-control" id="supplier" name="supplier[]" required>`;
             addMatToForms.innerHTML = addFieldMaterial;
             fields.appendChild(addMatToForms);
         }

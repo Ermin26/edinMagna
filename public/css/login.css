@@ -13,9 +13,10 @@ section{
     border-radius: 4px;
 }
 
-form{
+#form{
     text-align: center;
     width: 100%;
+    padding: 4px 16px;
 }
 
 .mb-3{

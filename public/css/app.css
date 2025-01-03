@@ -80,13 +80,16 @@ main{
     position: relative;
     width: 100%;
     overflow: hidden;
-    top: 50px;
+    top: 20px;
     padding: 10px 20px;
 }
 
 #table{
     width: fit-content !important;
     overflow-y: auto;
+}
+table{
+    vertical-align: middle !important;
 }
 #allMaterials,#allLocations{
     max-width: 100%;

@@ -6,7 +6,7 @@
 
 @section('content')
     <section>
-        <form action="{{route('updateUser')}}" method="POST">
+        <form id="form" action="{{route('updateUser')}}" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="username" class="form-label">User</label>

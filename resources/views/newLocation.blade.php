@@ -5,7 +5,7 @@
 @endpush
 @section('content')
     <section>
-        <form action="{{route('addLocation')}}" id="locationForm" method="POST">
+        <form id="form" action="{{route('addLocation')}}" id="locationForm" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="location" class="form-label">Location</label>
@@ -21,11 +21,14 @@
             </div>
         </form>
     </section>
+    @if(count($locations) > 0)
     <div class="row justify-content-center m-5">
         <button id="showLocations" class="btn btn-primary w-auto" onclick="showLocations()">Show locations</button>
         <button id="hideLocations" class="btn btn-primary w-auto" onclick="hideLocations()">Hide locations</button>
     </div>
-
+    @else
+    <h3 class="text-center text-light m-3 p-4">No locations have bin added yet.</h3>
+    @endif
     <section id="allLocations" class="text-center">
         <h2>All locations</h2>
 
@@ -35,6 +38,7 @@
                 <th>User</th>
                 <th>Role</th>
                 <th>Created</th>
+                <th>Edit</th>
             </thead>
             <tbody>
                 @forEach($locations as $location)
@@ -43,6 +47,7 @@
                     <td>Edin</td>
                     <td>Admin</td>
                     <td>{{\Carbon\Carbon::parse($location->created_at)->format('d.m.Y')}}</td>
+                    <td><a class="btn btn-sm btn-warning" href="editLocation/{{$location->id}}">Edit</a></td>
                 </tr>
                 @endforeach
             </tbody>
