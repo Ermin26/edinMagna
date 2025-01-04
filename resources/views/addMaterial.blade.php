@@ -9,7 +9,12 @@
             @csrf
             <div class="mb-3 bg-dark p-4">
                 <label for="location" class="form-label mt-3">Location</label>
-                <input type="text" class="form-control" id="location" name="location[]" required>
+                <input type="text" class="form-control location" id="location" name="location[]" onfocus="showOptions()"  autocomplete="off" required>
+                <div id="locations">
+                    @foreach($locations as $location)
+                        <span class="option" value="{{$location->location}}" onclick="selectedLoc(this)">{{$location->location}}</span>
+                    @endforeach
+                </div>
 
                 <label for="material" class="form-label mt-3">Material</label>
                 <input type="text" class="form-control" id="material" name="material[]" required>
@@ -77,6 +82,23 @@
         clear.style.display = "none";
         allMaterials.style.display = "none";
         hideMaterials.style.display = "none";
+
+        
+
+        function selectedLoc(selected){
+            let parentDiv = selected.closest('.mb-3');
+            let inputField = parentDiv.querySelector('.location');
+            inputField.value = selected.innerHTML;
+            document.getElementById("locations").style.display="none";
+        }
+
+        function showOptions(){
+            document.getElementById("locations").style.display = "flex";
+        }
+        function hideOptions(){
+            document.getElementById("locations").style.display = "none";
+        }
+
         function addAll(){
             clear.style.display = "flex";
             materialAdd.classList.add('disabled');
@@ -84,8 +106,12 @@
             let addMatToForms = document.createElement("div");
             addMatToForms.classList.add('mb-3', 'p-4', 'bg-dark');
             let addFieldMaterial = `
-                <label for="location" class="form-label mt-3">Location</label>
-                <input type="text" class="form-control" id="location" name="location[]" required>
+                <input type="text" class="form-control location" id="location" name="location[]" onfocus="showOptions()"  autocomplete="off" required>
+                <div id="locations">
+                    @foreach($locations as $location)
+                        <span class="option" value="{{$location->location}}" onclick="selectedLoc(this)">{{$location->location}}</span>
+                    @endforeach
+                </div>
                 
                 <label for="material" class="form-label mt-3">Material</label>
                 <input type="text" class="form-control" id="material" name="material[]" required>
@@ -114,8 +140,13 @@
             materialAdd.classList.add('disabled');
             let addMatToForms = document.createElement("div");
             addMatToForms.classList.add('mb-3', 'p-4', 'bg-dark');
-            let addFieldLocation = `<label for="location" class="form-label">Location</label>
-                <input type="text" class="form-control" id="location" name="location[]" required>`;
+            let addFieldLocation = `<label for="location" class="form-label mt-3">Location</label>
+                <input type="text" class="form-control location" id="location" name="location[]" onfocus="showOptions()"  autocomplete="off" required>
+                <div id="locations">
+                    @foreach($locations as $location)
+                        <span class="option" value="{{$location->location}}" onclick="selectedLoc(this)">{{$location->location}}</span>
+                    @endforeach
+                </div>`;
             addMatToForms.innerHTML = addFieldLocation;
             fields.appendChild(addMatToForms);
         }

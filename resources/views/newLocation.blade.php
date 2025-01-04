@@ -9,7 +9,8 @@
             @csrf
             <div class="mb-3">
                 <label for="location" class="form-label">Location</label>
-                <input type="text" class="form-control" id="location" name="location[]" required>
+                <input type="text" class="form-control" id="location" name="location[]" onkeyup="checkLoc(this)" required>
+                <span class="errorSpan"></span>
             </div>
             <div id="addedRows">
 
@@ -60,25 +61,47 @@
         let formData = document.getElementById('locationForm');
         let before = document.getElementById('btnRow');
         let clearBtn = document.getElementById('clear');
+        
+        let locations = @json($locations);
         document.getElementById('showAll').setAttribute("disabled", true);
         document.getElementById('search').setAttribute("disabled", true);
-        clearBtn.style.display = 'none';
         document.getElementById('allLocations').style.display = 'none';
         document.getElementById('hideLocations').style.display = 'none';
-
+        document.querySelector('.errorSpan').style.display = 'none';
+        clearBtn.style.display = 'none';
+        let locationsArray = [];
+        locations.forEach(element => {
+            locationsArray.push(element.location);
+        });
+        function checkLoc(inputElement){
+            let parentDiv = inputElement.closest('.mb-3');
+            let errorSpan = parentDiv.querySelector('.errorSpan');
+            let location = inputElement.value;
+            if(locationsArray.includes(location)){
+                errorSpan.textContent = "Location already exists";
+                errorSpan.style.display = 'block';
+            }else{
+                errorSpan.style.display = 'none';
+            }
+        }
 
         function addRow(){
             clearBtn.style.display = 'flex';
             let locationDiv = document.createElement('div');
             locationDiv.classList.add('mb-3');
             locationDiv.innerHTML = `<label for="location" class="form-label">Location</label>
-                <input type="text" class="form-control" id="location" name="location[]" required>`;
+                <input type="text" class="form-control" id="location" name="location[]" onkeyup="checkLoc(this)" required>
+                <span class="errorSpan"></span>`;
             fields.appendChild(locationDiv);
+            let errorSpan = locationDiv.querySelector('.errorSpan');
+            errorSpan.style.display = 'none';
         }
 
         function clearData(){
             fields.innerHTML = " ";
+            document.getElementById('location').value= "";
             clearBtn.style.display = 'none';
+            document.querySelector('.errorSpan').style.display = 'none';
         }
 
         function showLocations() {

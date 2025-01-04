@@ -113,7 +113,8 @@ class AppController extends Controller{
     }
     public function getAllMaterials(){
         $materials = Material::all();
-        return view('addMaterial', compact('materials'));
+        $locations = Location::all();
+        return view('addMaterial', compact('materials', 'locations'));
     }
 
     public function getAllLocations(){

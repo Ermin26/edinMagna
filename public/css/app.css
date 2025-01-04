@@ -68,7 +68,6 @@ a{
     color: whitesmoke;
 }
 
-
 .btn:hover{
     background-color: rgb(70, 69, 69);
 }
@@ -131,9 +130,39 @@ table{
     background-color: #cf2533a9;
 }
 
+.mb-3{
+    position: relative !important;
+}
+
 #allLocations, #allMaterials{
     margin-top: 40px;
     width: fit-content !important;
+}
+
+#locations{
+    display: flex;
+    flex-direction: column;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: rgba(28, 26, 26);
+    position: absolute;
+    top: 110px;
+    left: 100%;
+    transform: translate(-60%);
+    scrollbar-width: thin;
+    scrollbar-color: rgb(35, 34, 34);
+    display: none;
+    z-index: 1000;
+}
+#locations span{
+    display: flex;
+    cursor: pointer;
+    width: 100%;
+    margin: 0;
+    padding: 4px 8px;
+}
+#locations > span:hover{
+    background-color: rgba(159, 162, 164, 0.878);
 }
 
 @media (max-width: 576px){
