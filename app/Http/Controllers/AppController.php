@@ -205,18 +205,19 @@ class AppController extends Controller{
             $request->validate([
                 'username' => 'string|required',
                 'role' => 'string|required',
-                'password' => 'string|min:5|confirmed'
+                'password' => 'string|nullable|min:5|confirmed'
             ]);
             $user = User::find($request->input('username'));
             if($user){
                 $name = $request->input('name');
                 $role = $request->input('role');
-                $pass = $request->input('password');
+                $pass = $request->input('password') ? $request->input('password') : $user->password;
+
                 if($user->name != 'Edin' || Auth::user()->name == $user->name){
                     $user->update([
                         'name'=> $request->input('name') ? $name : $user->name,
                         'role'=> $role,
-                        'password'=> Hash::make($pass),
+                        'password'=> $pass,
                         'updated_by' => Auth::user()->name
                     ]);
                     return redirect()->back()->with('success', "User {$user->name} updated successfully");
@@ -243,6 +244,7 @@ class AppController extends Controller{
     }
 
     public function updateMaterial(Request $request, $id){
+        if($this->checkRole()){
         try{
             $request->validate([
                 'material' => 'string|required',
@@ -264,21 +266,58 @@ class AppController extends Controller{
             $errors = $e->validator->errors()->all();
             return redirect()->back()->with('error', implode(', ', $errors));
         }
+        }else{
+            return redirect()->back()->with('error', 'You are not authorized to change any data. ');
+        }
     }
     public function editLocation($id){
         $location = Location::find($id);
-        if($location){
+        if($location && $this->checkRole()){
             return view('editLocation', compact('location'));
+        }else {
+            return redirect()->back()->with('error', 'You are not authorized to edit locations.');
         }
     }
 
     public function updateLocation(Request $request, $id){
-        $location = Location::find($id);
-        $location->location = $request->input('location');
-        $location->updated_by = Auth::user()->name;
-        $location->save();
-        return redirect()->back()->with('success', "Location '{$location->location}' sucssefily updated.");
+        if($this->checkRole()){
+            $location = Location::find($id);
+            $location->location = $request->input('location');
+            $location->updated_by = Auth::user()->name;
+            $location->save();
+            return redirect()->back()->with('success', "Location '{$location->location}' sucssefily updated.");
+        }else{
+            return redirect()->back()->with('error', 'You are not authorized to add any data. ');
+        }
     }
+
+    public function editProfile(Request $request, $id){
+        $user = User::find($id);
+        if($user){
+            return view('editProfile', compact('user'));
+        }else{
+            return redirect()->back()->with('error', 'User not found.');
+        }
+    }
+    public function updateProfile(Request $request, $id){
+        try{
+            $user = User::find($id);
+            $request->validate([
+                'name' => 'string|',
+                'password' => 'string|nullable|min:5|confirmed'
+            ]);
+            $password = $request->input('password') ? Hash::make($request->input('password')) : $user->password;
+            $user->name = $request->input('name');
+            $user->password = $password;
+            $user->save();
+            return redirect()->back()->with('success', 'Data updated successfully.');
+
+        }catch(ValidationException $e){
+            $errors = $e->validator->errors()->all();
+            return redirect()->back()->with('error', implode(', ', $errors));
+        }
+    }
+
     private function checkNewLocation($newLocation){
         return Location::where('location', $newLocation)->exists();
     }

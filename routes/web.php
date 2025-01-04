@@ -17,7 +17,9 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/editUser', [AppController::class, 'editUser'])->name('editUser');
     Route::get('/editLocation/{id}', [AppController::class, 'editLocation'])->name('editLocation');
     Route::get('/editMaterial/{id}',[AppController::class, 'editMaterial'])->name('editMaterial');
+    Route::get('/editProfile/{id}',[AppController::class, 'editProfile'])->name('editProfile');
 
+    Route::post('/updateProfile/{id}', [AppController::class, 'updateProfile'])->name('updateProfile');
     Route::post('/updateMaterial/{id}', [AppController::class, 'updateMaterial'])->name('updateMaterial');
     Route::post('/updateLocation/{id}', [AppController::class, 'updateLocation'])->name('updateLocation');
     Route::post('/addLocation', [AppController::class, 'addLocation'])->name('addLocation');

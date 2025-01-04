@@ -12,8 +12,11 @@
         <ul class="navbar-nav">
             <li class="nav-item"><a href="/addMaterial" class="btn btn-sm btn-secondary">Add material</a></li>
             <li class="nav-item"><a href="/newLocation" class="btn btn-sm btn-secondary">Add location</a></li>
+            @if(Auth::user()->role == 'admin')
             <li class="nav-item"><a href="/newUser" class="btn btn-sm btn-secondary">Add user</a></li>
             <li class="nav-item"><a href="/editUser" class="btn btn-sm btn-secondary">Edit user</a></li>
+           @endif
+            <li class="nav-item"><a href="/editProfile/{{Auth::user()->id}}" class="btn btn-sm btn-secondary">Profile</a></li>
       @endif
             @if(!Auth::user())
             <li class="nav-item ms-auto"><a href="#" class="btn btn-sm btn-secondary ms-auto">Log in</a></li>
