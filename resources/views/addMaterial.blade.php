@@ -84,8 +84,13 @@
         hideMaterials.style.display = "none";
 
         
-
+        let parentElements= []
         function selectedLoc(selected){
+            while (parent) {
+                parentElements.push(parent);
+                parent = parent.parentElement; // Premaknemo se na naslednji starševski element
+            }
+            console.log(parentElements);
             let parentDiv = selected.closest('.mb-3');
             let inputField = parentDiv.querySelector('.location');
             inputField.value = selected.innerHTML;
