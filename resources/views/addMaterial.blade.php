@@ -7,10 +7,11 @@
     <section>
         <form id="form" action="{{route('newMaterial')}}" id="materialForm" method="POST">
             @csrf
-            <div class="mb-3 bg-dark p-4">
+            <div class="mb-3 bg-dark p-4 fields">
                 <label for="location" class="form-label mt-3">Location</label>
-                <input type="text" class="form-control location" id="location" name="location[]" onfocus="showOptions()"  autocomplete="off" required>
-                <div id="locations">
+                <input type="text" class="form-control location" id="location" name="location[]" onkeyup="checkLocation(this)" onfocus="showOptions(this)" onblur="hideOptions(this)"  autocomplete="off" required>
+                <span class="errorSpan"></span>
+                <div class="locationOptions" onmousedown="event.preventDefault()">
                     @foreach($locations as $location)
                         <span class="option" value="{{$location->location}}" onclick="selectedLoc(this)">{{$location->location}}</span>
                     @endforeach
@@ -69,6 +70,7 @@
     <script>
         document.getElementById('showAll').setAttribute("disabled", true);
         document.getElementById('search').setAttribute("disabled", true);
+        let elements = @json($locations);
         let fields = document.getElementById("addedRows");
         let before = document.getElementById("btnRow");
         let bothAdd = document.getElementById("bothAdd");
@@ -79,40 +81,72 @@
         let allMaterials = document.getElementById("allMaterials");
         let showMaterials = document.getElementById("showMaterials");
         let hideMaterials = document.getElementById("hideMaterials");
+        let errorSpan = document.querySelectorAll(".errorSpan");
+
+        document.querySelector('.errorSpan').style.display = 'none';
         clear.style.display = "none";
         allMaterials.style.display = "none";
         hideMaterials.style.display = "none";
 
-        
-        let parentElements= []
+        let locations = [];
+        elements.forEach(element =>{
+            locations.push(element.location);
+        })
         function selectedLoc(selected){
-            while (parent) {
-                parentElements.push(parent);
-                parent = parent.parentElement; // Premaknemo se na naslednji starševski element
-            }
-            console.log(parentElements);
-            let parentDiv = selected.closest('.mb-3');
+            let parentDiv = selected.closest('.fields');
             let inputField = parentDiv.querySelector('.location');
+            let options = parentDiv.querySelector('.locationOptions');
             inputField.value = selected.innerHTML;
-            document.getElementById("locations").style.display="none";
+            options.style.display = "none";
         }
 
-        function showOptions(){
-            document.getElementById("locations").style.display = "flex";
+        function showOptions(field){
+            let parentDiv = field.closest('.fields');
+            let inputField = parentDiv.querySelector('.location');
+            let options = parentDiv.querySelector('.locationOptions');
+            options.style.width = inputField.offsetWidth + "px";
+            options.style.display = "flex";
         }
-        function hideOptions(){
-            document.getElementById("locations").style.display = "none";
+        function hideOptions(field){
+            let parentDiv = field.closest('.fields');
+            let inputField = parentDiv.querySelector('.location');
+            let options = parentDiv.querySelector('.locationOptions');
+            options.style.display = "none";
         }
-
+        function checkLocation(inputData){
+            let parentDiv = inputData.closest('.fields');
+            let data = parentDiv.querySelector('.location');
+            let errorSpan = parentDiv.querySelector('.errorSpan');
+            if( data.value.length > 0 && !locations.includes(data.value)){
+                errorSpan.textContent = "Location not exist.";
+                errorSpan.style.display = 'block';
+            }else{
+                errorSpan.style.display = "none";
+            }
+            let result = locations.filter(location => location.startsWith(data.value));
+            if(result){
+                let newOptions = parentDiv.querySelector('.locationOptions');
+                newOptions.innerHTML = '';
+                result.forEach(location => {
+                    let newSpan = document.createElement('span');
+                    newSpan.classList.add('option');
+                    newSpan.value = location;
+                    newSpan.innerHTML = `${location}`;
+                    newOptions.appendChild(newSpan);
+                })
+            }
+        }
         function addAll(){
             clear.style.display = "flex";
             materialAdd.classList.add('disabled');
             locationAdd.classList.add('disabled');
             let addMatToForms = document.createElement("div");
-            addMatToForms.classList.add('mb-3', 'p-4', 'bg-dark');
+            addMatToForms.classList.add('mb-3', 'p-4', 'bg-dark', 'fields');
             let addFieldMaterial = `
-                <input type="text" class="form-control location" id="location" name="location[]" onfocus="showOptions()"  autocomplete="off" required>
-                <div id="locations">
+                <label for="location" class="form-label mt-3">Location</label>
+                <input type="text" class="form-control location" id="location" name="location[]" onkeyup="checkLocation(this)" onfocus="showOptions(this)" onblur="hideOptions(this)"  autocomplete="off" required>
+                <span class="errorSpan"></span>
+                <div class="locationOptions" onmousedown="event.preventDefault()">
                     @foreach($locations as $location)
                         <span class="option" value="{{$location->location}}" onclick="selectedLoc(this)">{{$location->location}}</span>
                     @endforeach
@@ -125,6 +159,7 @@
                 <input type="text" class="form-control" id="supplier" name="supplier[]" required>`;
             addMatToForms.innerHTML = addFieldMaterial;
             fields.appendChild(addMatToForms);
+            document.querySelector('.errorSpan').style.display = 'none';
         }
         function addMat(){
             clear.style.display = "flex";
@@ -144,16 +179,18 @@
             bothAdd.classList.add('disabled');
             materialAdd.classList.add('disabled');
             let addMatToForms = document.createElement("div");
-            addMatToForms.classList.add('mb-3', 'p-4', 'bg-dark');
+            addMatToForms.classList.add('mb-3', 'p-4', 'bg-dark', 'fields');
             let addFieldLocation = `<label for="location" class="form-label mt-3">Location</label>
-                <input type="text" class="form-control location" id="location" name="location[]" onfocus="showOptions()"  autocomplete="off" required>
-                <div id="locations">
+                <input type="text" class="form-control location" id="location" name="location[]" onkeyup="checkLocation(this)" onfocus="showOptions(this)" onblur="hideOptions(this)"  autocomplete="off" required>
+                <span class="errorSpan"></span>
+                <div class="locationOptions" onmousedown="event.preventDefault()">
                     @foreach($locations as $location)
                         <span class="option" value="{{$location->location}}" onclick="selectedLoc(this)">{{$location->location}}</span>
                     @endforeach
                 </div>`;
             addMatToForms.innerHTML = addFieldLocation;
             fields.appendChild(addMatToForms);
+            errorSpan.forEach(span =>{span.style.display = 'none';})
         }
 
         function clearData(){

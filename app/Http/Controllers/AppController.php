@@ -66,6 +66,7 @@ class AppController extends Controller{
             User::create([
                 'name' => $request->input('username'),
                 'role' => $request->input('role'),
+                'added' => Auth::user()->name,
                 'password' =>  Hash::make($request->input('password'))
             ]);
             return redirect()->back()->with('success', "User {$request->input('username')} added successfully");

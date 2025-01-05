@@ -1,8 +1,8 @@
 <nav class="navbar sticky-top navbar-expand-lg bg-dark text-light">
     <div class="container-fluid text-light p-0 justify-content-start">
-      @if(Auth::user())
+     @if(Auth::user())
       <a href="/" class="btn-sm btn-secondary"><img src="{{asset('imgs/home.png')}}" alt="Home icon"></a>
-        <input type="search" name="search" id="search" onkeyup="searchMaterial()" placeholder=" Search location">
+        <input type="search" name="search" id="search" onkeyup="searchMaterial()" placeholder=" Search material">
         <button id="showAll" class="btn btn-sm btn-secondary" onclick="showAll()">Show all</button>
         <button id="navbarBtn" class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,7 +15,7 @@
             @if(Auth::user()->role == 'admin')
             <li class="nav-item"><a href="/newUser" class="btn btn-sm btn-secondary">Add user</a></li>
             <li class="nav-item"><a href="/editUser" class="btn btn-sm btn-secondary">Edit user</a></li>
-           @endif
+            @endif
             <li class="nav-item"><a href="/editProfile/{{Auth::user()->id}}" class="btn btn-sm btn-secondary">Profile</a></li>
       @endif
             @if(!Auth::user())
