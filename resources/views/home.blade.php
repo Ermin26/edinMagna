@@ -28,21 +28,45 @@
         })
         let test = @json($materials);
         let table = document.querySelector('#table tbody');
-
         function searchMaterial(){
             let searched = document.getElementById("search").value.toUpperCase();
             let results = test.filter(obj => obj.material.toUpperCase().startsWith(searched));
             table.innerHTML = '';
             let count = 1;
-            results.forEach( item => {
-                let row = table.insertRow();
-                row.insertCell(0).textContent = count;
-                row.insertCell(1).textContent = item.location;
-                row.insertCell(2).textContent = item.material;
-                row.insertCell(3).textContent = item.supplier ? item.supplier : 'Supplier';
-
-                count++;
-            })
+            if(results.length > 0){
+                results.forEach( item => {
+                    let row = table.insertRow();
+                    row.insertCell(0).textContent = count;
+                    row.insertCell(1).textContent = item.location;
+                    row.insertCell(2).textContent = item.material;
+                    row.insertCell(3).textContent = item.supplier ? item.supplier : 'Supplier';
+                    count++;
+                })
+            }else{
+                let result = test.filter(obj => obj.location.toUpperCase().startsWith(searched));
+                if(result.length > 0){
+                    let count = 1;
+                    result.forEach( item => {
+                        let row = table.insertRow();
+                        row.insertCell(0).textContent = count;
+                        row.insertCell(1).textContent = item.location;
+                        row.insertCell(2).textContent = item.material;
+                        row.insertCell(3).textContent = item.supplier ? item.supplier : 'Supplier';
+                        count++;
+                    })
+                }else{
+                    let result = test.filter(obj => obj.supplier.toUpperCase().startsWith(searched));
+                    let count = 1;
+                    result.forEach( item => {
+                        let row = table.insertRow();
+                        row.insertCell(0).textContent = count;
+                        row.insertCell(1).textContent = item.location;
+                        row.insertCell(2).textContent = item.material;
+                        row.insertCell(3).textContent = item.supplier ? item.supplier : 'Supplier';
+                        count++;
+                    })
+                }
+            }
             if(!searched){
                 table.innerHTML = '';
             }
