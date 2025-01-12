@@ -32,12 +32,12 @@
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" onkeyup="checkLength()">
+                <input type="password" class="form-control" id="password" name="password" onkeyup="checkLength()" placeholder="Only for update">
                 <span id="lengthPass">Minimum 5 characters</span>
             </div>
             <div class="mb-3">
                 <label for="password_confirmation" class="form-label">Password again</label>
-                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" onkeyup="checkPass()">
+                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" onkeyup="checkPass()" placeholder="Repeat password">
                 <span id="checkMatch">Passwords don't match.</span>
             </div>
             <button class="btn btn-primary">Submit</button>

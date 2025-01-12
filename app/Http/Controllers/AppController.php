@@ -50,7 +50,7 @@ class AppController extends Controller{
         }
     }
     public function home(){
-        $materials = Material::all();
+        $materials = Material::orderBy('material', 'ASC')->get();;
 
         return view('home', compact('materials'));
     }
@@ -206,19 +206,17 @@ class AppController extends Controller{
         try{
             $request->validate([
                 'username' => 'string|required',
-                'role' => 'string|required',
+                'role' => 'string|required|required',
                 'password' => 'string|nullable|min:5|confirmed'
             ]);
             $user = User::find($request->input('username'));
             if($user){
-                $name = $request->input('name');
-                $role = $request->input('role');
-                $pass = $request->input('password') ? $request->input('password') : $user->password;
+                $pass = $request->input('password') ? Hash::make($request->input('password')) : $user->password;
 
                 if($user->name != 'Edin' || Auth::user()->name == $user->name){
                     $user->update([
-                        'name'=> $request->input('name') ? $name : $user->name,
-                        'role'=> $role,
+                        'name'=> $request->input('name') ? $request->input('name') : $user->name,
+                        'role'=> $request->input('role'),
                         'password'=> $pass,
                         'updated_by' => Auth::user()->name
                     ]);
