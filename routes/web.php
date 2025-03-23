@@ -35,33 +35,33 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/logout', [AppController::class, 'logout'])->name('logout');
 });
 
-Route::post('/api/login', [UserController::class, 'login'])->name('login');
+Route::post('/api/login', [UserController::class, 'login']);
 Route::post('/api/force-reset', function (Request $request){
     Session::flush();
     return response()->json(['message' => 'Session cleared successfully']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/api/all', [MaterialController::class, 'materials'])->name('materials');
-    Route::get('/api/materials/{id}', [MaterialController::class, 'show'])->name('show');
-    Route::get('/api/locations', [LocationController::class, 'locations'])->name('locations');
-    Route::get('/api/location/{id}', [LocationController::class, 'location'])->name('location');
-    Route::get('/api/existingLocations', [LocationController::class, 'existingLocations'])->name('existingLocations');
-    Route::get('/api/users', [UserController::class, 'users'])->name('users');
-    Route::get('/api/profile/{id}', [UserController::class, 'profile'])->name('profile');
+    Route::get('/api/all', [MaterialController::class, 'materials']);
+    Route::get('/api/materials/{id}', [MaterialController::class, 'show']);
+    Route::get('/api/locations', [LocationController::class, 'locations']);
+    Route::get('/api/location/{id}', [LocationController::class, 'location']);
+    Route::get('/api/existingLocations', [LocationController::class, 'existingLocations']);
+    Route::get('/api/users', [UserController::class, 'users']);
+    Route::get('/api/profile/{id}', [UserController::class, 'profile']);
 
-    Route::post('/api/store-locations', [LocationController::class, 'newLocations'])->name('newLocations');
-    Route::post('/api/role', [UserController::class, 'role'])->name('role');
-    Route::post('/api/materials', [MaterialController::class, 'store'])->name('store');
-    Route::post('/api/create-user', [UserController::class, 'createUser'])->name('createUser');
-    Route::post('/api/update-profile/{id}', [UserController::class, 'updateProfile'])->name('updateProfile');
-    Route::post('/api/logout', [UserController::class, 'logout'])->name('logout');
-    Route::post('/api/material/{id}', [MaterialController::class, 'update'])->name('update');
+    Route::post('/api/store-locations', [LocationController::class, 'newLocations']);
+    Route::post('/api/role', [UserController::class, 'role']);
+    Route::post('/api/materials', [MaterialController::class, 'store']);
+    Route::post('/api/create-user', [UserController::class, 'createUser']);
+    Route::post('/api/update-profile/{id}', [UserController::class, 'updateProfile']);
+    Route::post('/api/logout', [UserController::class, 'logout']);
+    Route::post('/api/material/{id}', [MaterialController::class, 'update']);
     
-    Route::put('/api/update-user', [UserController::class, 'updateUser'])->name('updateUser');
-    Route::put('/api/update-location/{id}', [LocationController::class, 'updateLocation'])->name('updateLocation');
+    Route::put('/api/update-user', [UserController::class, 'updateUser']);
+    Route::put('/api/update-location/{id}', [LocationController::class, 'updateLocation']);
 
-    Route::delete('/api/delete-location/{id}', [LocationController::class, 'deleteLocation'])->name('deleteLocation');
-    Route::delete('/api/delete-material/{id}', [MaterialController::class, 'delete'])->name('delete');
+    Route::delete('/api/delete-location/{id}', [LocationController::class, 'deleteLocation']);
+    Route::delete('/api/delete-material/{id}', [MaterialController::class, 'delete']);
 
 });
